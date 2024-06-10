@@ -1,0 +1,92 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: 'NanumBarunGothicYetHangul', sans-serif;
+    background-image: url('/static/images/light.png');
+    background-size: cover; /* 이미지를 요소에 맞게 크기 조정 */
+    background-position: center; /* 이미지를 가운데 정렬 */
+}
+
+.grid-container {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.grid-item {
+    width: 30%;
+    height: 80%;
+    margin: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.grid-item:hover {
+    transform: translateY(-5px);
+}
+
+.grid-item h2 {
+    margin: 0;
+    color: #f37050;
+    font-size: 33px;
+    font-weight: bold; /* 굵은 글꼴 적용 */
+}
+
+.content {
+    text-align: center;
+    padding: 30px;
+    color: white;
+    font-size: 30px;
+    opacity: 1;
+    animation: fadeIn 1s forwards;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+    position: relative;
+    z-index: 1;
+
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* 이미지 애니메이션 */
+@keyframes move {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(50px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.drone-image {
+    animation: move 3s infinite; /* 애니메이션 적용 */
+}
+
+a {
+    text-decoration: none; /* 링크의 밑줄 제거 */
+    color: inherit; /* 기본 링크 색상으로 설정 */
+}
+
+a:hover {
+    text-decoration: none; /* 호버 시 밑줄 제거 */
+}

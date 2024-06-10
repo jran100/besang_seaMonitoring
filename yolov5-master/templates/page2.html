@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>page2</title>
+    <link href="https://hangeul.pstatic.net/hangeul_static/css/NanumBarunGothicYetHangul.css" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #00498c;
+            background-image: url('./static/images/page1.png');
+            background-size: cover; /* 이미지를 요소에 맞게 크기 조정 */
+            background-position: center; /* 이미지를 가운데 정렬 */
+            font-family: 'NanumBarunGothicYetHangul', sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-auto-rows: minmax(100px, auto);
+            gap: 10px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        
+        .grid-item {
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .content {
+            text-align: left;
+            padding: 20px;
+            color: white;
+            font-size: 15px;
+            opacity: 1; /* 배경 이미지와 텍스트 함께 나타나도록 투명도를 1로 설정 */
+            animation: fadeIn 1s forwards;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7); /* 텍스트에 그림자 효과 추가 */
+            position: relative;
+            z-index: 1;
+        }
+
+        table {
+            width: 90%;
+            margin: 10px;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+            font-size: 20px; /* 글자 크기 조정 */
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .calendar-month {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .memo-input {
+            width: 90%;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        canvas {
+            width: 80px; /* 도넛 그래프의 너비 조절 */
+            height: 80px; /* 도넛 그래프의 높이 조절 */
+        }
+        
+    </style>
+</head>
+<body>
+
+<div class="content">
+    <h1>생산 현황</h1>
+</div>
+
+<div class="grid-container">
+    <div class="grid-item" style="grid-column: 1 / 1; grid-row: 1 / 2;" id="currentTime">
+    </div>
+    <div class="grid-item" style="grid-column: 2 / 3; grid-row: 1 / 3;">
+        <h1>전체 생장 달성률</h1>
+        <canvas id="totalDonutChart"></canvas>
+    </div>
+    <div class="grid-item" style="grid-column: 3 / 4; grid-row: 1 / 3;">
+        <h1>불량률</h1>
+        <canvas id="defectDonutChart"></canvas>
+    </div>
+    <div class="grid-item" style="grid-column: 4 / 5; grid-row: 1 / 3;">
+        <h1>총 생산일</h1>
+        <canvas id="progressDonutChart"></canvas>
+    </div>
+    <div class="grid-item" style="grid-column: 5 / 6; grid-row: 1 / 3;">
+        <h1>납기일</h1>
+        <canvas id="deadlineDonutChart"></canvas>
+    </div>
+    <div class="grid-item" style="grid-column: 1 / 2" id="calendarItem">
+    </div>
+
+    <div class="grid-item" style="grid-column: 1 / 2">
+        <h1>최적 수확일</h1>
+        <canvas id="deadlineDonutChart"></canvas>
+    </div>
+    <div class="grid-item" style="grid-column: 2 / 3; grid-row: 3 / 3">
+        <h1>최고 생장일 기상 정보</h1>
+<table>
+    <tbody>
+        {% for data in weather_info %}
+        <tr>
+            <th>시간</th>
+            <th>{{ data[1] }}</th>
+        </tr>
+        <tr>
+            <td>날씨</td>
+            <td>{{ data[2] }}</td> <!-- 날씨 -->
+        </tr>
+        <tr>
+            <td>습도</td>
+            <td>{{ data[3] }}</td> <!-- 습도 -->
+        </tr>
+        <tr>
+            <td>강수량</td>
+            <td>{{ data[4] }}</td> <!-- 강수량 -->
+        </tr>
+        <tr>
+            <td>온도</td>
+            <td>{{ data[5] }}</td> <!-- 온도 -->
+        </tr>
+        <tr>
+            <td>풍향</td>
+            <td>{{ data[6] }}</td> <!-- 풍향 -->
+        </tr>
+        <tr>
+            <td>풍속</td>
+            <td>{{ data[7] }}</td> <!-- 풍속 -->
+        </tr>
+        {% endfor %}
+    </tbody>
+    
+</table>
+    </div>
+    <div class="grid-item" style="grid-column: 3 / 4; grid-row: 3 / 3">
+        <h1>최저 생장일 기상 정보</h1>
+        <table>
+            <tbody>
+                {% for data in weather_info %}
+                <tr>
+                    <th>시간</th>
+                    <th>{{ data[1] }}</th>
+                </tr>
+                <tr>
+                    <td>날씨</td>
+                    <td>{{ data[2] }}</td> <!-- 날씨 -->
+                </tr>
+                <tr>
+                    <td>습도</td>
+                    <td>{{ data[3] }}</td> <!-- 습도 -->
+                </tr>
+                <tr>
+                    <td>강수량</td>
+                    <td>{{ data[4] }}</td> <!-- 강수량 -->
+                </tr>
+                <tr>
+                    <td>온도</td>
+                    <td>{{ data[5] }}</td> <!-- 온도 -->
+                </tr>
+                <tr>
+                    <td>풍향</td>
+                    <td>{{ data[6] }}</td> <!-- 풍향 -->
+                </tr>
+                <tr>
+                    <td>풍속</td>
+                    <td>{{ data[7] }}</td> <!-- 풍속 -->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="grid-item" style="grid-column: 4 / 5; grid-row: 3 / 3">
+        <h1>납기일(회사별)</h1>
+        <canvas id="deliveryDeadlineChart"></canvas>
+    </div>
+        <div class="grid-item" style="grid-column: 5 / 6; grid-row: 3 / 3">
+        <h1>싯가(노량진 수산시장)</h1>
+        <canvas id="shichangChart"></canvas>
+    </div>
+
+    <div class="grid-item" style="grid-column: 1 / 2" id="memoItem">
+        <textarea class="memo-input" placeholder="메모를 입력하세요..."></textarea>
+    </div>
+    <div class="grid-item" style="grid-column: 2 / 6; grid-row: 4 / 4; background-color: rgba(255, 165, 0, 0.5);">
+        <h1>납기일 11일 전까지 생산 완료 예상</h1>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    function displayCalendar() {
+        var today = new Date();
+        var year = today.getFullYear();
+        var month = today.getMonth() + 1;
+        
+        var calendarElement = document.getElementById('calendarItem');
+        var calendarHTML = '<table>';
+        calendarHTML += '<tr>';
+        calendarHTML += '<th colspan="7" class="calendar-month">' + year + '년 ' + month + '월</th>';
+        calendarHTML += '</tr>';
+        calendarHTML += '<tr>';
+        calendarHTML += '<th>일</th>';
+        calendarHTML += '<th>월</th>';
+        calendarHTML += '<th>화</th>';
+        calendarHTML += '<th>수</th>';
+        calendarHTML += '<th>목</th>';
+        calendarHTML += '<th>금</th>';
+        calendarHTML += '<th>토</th>';
+        calendarHTML += '</tr>';
+        
+        var firstDay = new Date(year, month - 1, 1);
+        var lastDay = new Date(year, month, 0);
+        var firstDayOfWeek = firstDay.getDay();
+
+        calendarHTML += '<tr>';
+        for (var i = 0; i < firstDayOfWeek; i++) {
+            calendarHTML += '<td></td>';
+        }
+        for (var i = 1; i <= lastDay.getDate(); i++) {
+            var currentDay = new Date(year, month - 1, i);
+            var dayOfWeek = currentDay.getDay();
+            if (dayOfWeek === 0) {
+                calendarHTML += '</tr><tr>';
+            }
+            calendarHTML += '<td>' + i + '</td>';
+        }
+        calendarHTML += '</tr>';
+        calendarHTML += '</table>';
+
+        calendarElement.innerHTML = calendarHTML;
+    }
+
+    function updateCurrentTime() {
+        var now = new Date();
+        document.getElementById('currentTime').innerHTML = '<h2>' + now.getFullYear() + '년 ' + (now.getMonth() + 1) + '월 ' + now.getDate() + '일 ' + '<br>' + now.getHours() + '시 ' + now.getMinutes() + '분 ' + now.getSeconds() + '초</h2>';
+    }
+
+    setInterval(updateCurrentTime, 1000);
+    displayCalendar();
+
+    function drawTotalDonutChart() {
+        var ctx = document.getElementById('totalDonutChart').getContext('2d');
+        var donutChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['생장 완료', '생장중'],
+                datasets: [{
+                    data: [1, 1],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)', // 빨간색
+                        'rgba(54, 162, 235, 0.7)' // 파란색
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                cutout: '70%' // 도넛의 중앙을 빈 공간으로 남기는 비율
+            }
+        });
+    }
+
+    function drawDefectDonutChart() {
+        var ctx = document.getElementById('defectDonutChart').getContext('2d');
+        var donutChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['불량 부표', '양호 부표'],
+            datasets: [{
+                data: [1, 1],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.7)', // 빨간색
+                    'rgba(54, 162, 235, 0.7)' // 파란색
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            cutout: '70%' // 도넛의 중앙을 빈 공간으로 남기는 비율
+        }
+        });
+    }
+
+    function drawProgressDonutChart() {
+        // 현재까지의 생산일 중에 얼마나 진행되었는지 계산합니다.
+        var totalDays = 100; // 총 생산일 수
+        var currentDay = 3; // 현재까지의 생산일 수 (예시로 3일로 설정)
+        var progressPercentage = (currentDay / totalDays) * 100;
+
+        var ctx = document.getElementById('progressDonutChart').getContext('2d');
+        var donutChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['진행된 일수', '남은 일수'],
+                datasets: [{
+                    data: [currentDay, totalDays - currentDay],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.7)', // 초록색
+                        'rgba(255, 99, 132, 0.7)' // 빨간색
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                cutout: '70%', // 도넛의 중앙을 빈 공간으로 남기는 비율
+                animation: {
+                    animateRotate: true // 회전 애니메이션 활성화
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var dataset = data.datasets[tooltipItem.datasetIndex];
+                            var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
+                                return previousValue + currentValue;
+                            });
+                            var currentValue = dataset.data[tooltipItem.index];
+                            var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+                            return percentage + "%";
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function drawFinalDonutChart() {
+        var deadline = new Date('2024-07-07'); // 납기일 설정
+        var today = new Date();
+        var remainingDays = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24)); // 현재 날짜와 납기일 사이의 일 수 계산
+
+        var ctx = document.getElementById('deadlineDonutChart').getContext('2d');
+        var donutChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['D-' + remainingDays, '납기일까지 남은 일수'],
+                datasets: [{
+                    data: [remainingDays, 7 - remainingDays],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)', // 빨간색
+                        'rgba(54, 162, 235, 0.7)' // 파란색
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                cutout: '70%', // 도넛의 중앙을 빈 공간으로 남기는 비율
+                animation: {
+                    animateRotate: true // 회전 애니메이션 활성화
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var dataset = data.datasets[tooltipItem.datasetIndex];
+                            var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
+                                return previousValue + currentValue;
+                            });
+                            var currentValue = dataset.data[tooltipItem.index];
+                            var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+                            return percentage + "%";
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function drawShichangChart() {
+        var ctx = document.getElementById('shichangChart').getContext('2d');
+        var shichangChart = new Chart(ctx, {
+            type: 'bar', // 가로 막대 그래프로 설정
+            data: {
+                labels: ['조개', '굴', '전복'],
+                datasets: [{
+                    data: [5, 8, 10], // 각각 조개, 굴, 전복에 대한 싯가를 나타내는 데이터
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)', // 조개
+                        'rgba(54, 162, 235, 0.7)', // 굴
+                        'rgba(255, 206, 86, 0.7)' // 전복
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y', // y축을 가로로 설정
+                scales: {
+                    y: {
+                        ticks: {
+                            font: {
+                                size: 20 // 글자 크기 조정
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false // 가로축 범례 숨기기
+                    }
+                }
+            }
+        });
+    }
+
+    function drawDeliveryDeadlineChart() {
+        var ctx = document.getElementById('deliveryDeadlineChart').getContext('2d');
+        var deliveryDeadlineChart = new Chart(ctx, {
+            type: 'bar', // 가로 막대 그래프로 설정
+            data: {
+                labels: ['(주)A', '(주)B', '(주)C'], // 회사명
+                datasets: [{
+                    label: 'D-Day', // 데이터셋 레이블
+                    data: [1, 2, 3], // 각 회사별 D-Day (예시 데이터)
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)', // 빨간색
+                        'rgba(54, 162, 235, 0.7)', // 파란색
+                        'rgba(255, 206, 86, 0.7)' // 노란색
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y', // y축을 가로로 설정
+                scales: {
+                    y: {
+                        ticks: {
+                            font: {
+                                size: 20 // 글자 크기 조정
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false // 가로축 범례 숨기기
+                    }
+                }
+            }
+        });
+    }
+    
+    setInterval(updateCurrentTime, 1000);
+    displayCalendar();
+    drawTotalDonutChart(); // 전체 생장 달성률 도넛 그래프
+    drawDefectDonutChart();
+    drawProgressDonutChart();
+    drawFinalDonutChart(); // 납기일까지의 남은 기간 도넛 그래프
+    drawShichangChart();
+    drawDeliveryDeadlineChart()
+</script>
+
+</body>
+</html>

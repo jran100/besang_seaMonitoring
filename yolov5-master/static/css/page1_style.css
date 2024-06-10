@@ -1,0 +1,84 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #00498c;
+    background-image: url('/static/images/page1.png');
+    background-size: cover; /* 이미지를 요소에 맞게 크기 조정 */
+    background-position: center; /* 이미지를 가운데 정렬 */
+    display: flex;
+    flex-direction: column;
+    font-family: 'NanumBarunGothicYetHangul', sans-serif;
+}
+
+.grid-container {
+    display: grid;
+    flex-direction: column;
+    grid-template-columns: 1fr 2fr 2fr;
+    grid-template-rows: 1fr 2fr 0.5fr;
+}
+
+.grid-item {
+    margin: 10px; /* 간격 조정 */
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    grid-column: span 1;
+    position: relative;
+}
+
+.content {
+    text-align: left;
+    padding: 20px;
+    color: white;
+    font-size: 15px;
+    opacity: 1; /* 배경 이미지와 텍스트 함께 나타나도록 투명도를 1로 설정 */
+    animation: fadeIn 1s forwards;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7); /* 텍스트에 그림자 효과 추가 */
+    position: relative;
+    z-index: 1;
+}
+
+table {
+    width: 90%;
+    margin: 10px;
+}
+
+th, td {
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.calendar-month {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.memo-input {
+    width: 90%;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.hover-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+    display: none;
+}

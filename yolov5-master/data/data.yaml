@@ -1,0 +1,5 @@
+train: ../training/images
+val: ../training/images
+
+nc: 1
+names: ['B']
